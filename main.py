@@ -65,6 +65,10 @@ gameover.set_volume(0.75)
 start.set_volume(0.75)
 pygame.mixer.music.set_volume(0.1125)
 Mute_Status = False
+
+def sound_abspielen(sound):
+    if not Mute_Status:
+        sound.play()
 lautstärke_slider = Slider(
     x= mitte_x - 650,           
     y= 185,           
@@ -187,7 +191,7 @@ while Spiel:
     if main_menu == "main": 
         bildschirm.blit(text_surface_ST, text_rect_ST)
         if start_button.draw(bildschirm, events):
-            start.play()
+            sound_abspielen(start)
             main_menu = "Game_Modes"
             frucht_x, frucht_y = neue_frucht_position()
             schlange = [
@@ -236,7 +240,7 @@ while Spiel:
         draw_text(str(highscore), font, weiß, mitte_x, 500)
         bildschirm.blit(text_surface_GO, text_rect_GO)
         if neues_spiel_button.draw(bildschirm, events):
-            start.play()
+            sound_abspielen(start)
             main_menu = "game"
             frucht_x, frucht_y = neue_frucht_position()
             schlange = [
@@ -285,7 +289,7 @@ while Spiel:
         # Fruchtrandomizer
         pygame.draw.circle(Game, (255, 0, 0), (int(frucht_x + zellgroesse // 2), int(frucht_y + zellgroesse // 2)), 20)
         if pygame.Rect(schlange[0][0], schlange[0][1], 40, 40).colliderect(pygame.Rect(frucht_x, frucht_y, 40, 40)):
-            essen.play()
+            sound_abspielen(essen)
             frucht_x, frucht_y = neue_frucht_position()
             frucht_score = frucht_score + 1
             soll_wachsen = True
@@ -323,7 +327,7 @@ while Spiel:
             if Richtung != "Stop":
                 if schlange[0] in schlange[1:]:
                     main_menu = "Game_Over"
-                    gameover.play()
+                    sound_abspielen(gameover)
                     schlange = [
                     (start_x, start_y),
                     (start_x - zellgroesse, start_y),
@@ -336,7 +340,7 @@ while Spiel:
         kopf_x, kopf_y = schlange[0]
         if kopf_x < feld_x or kopf_x > feld_x + spielfeld_breite - 40 or kopf_y < feld_y or kopf_y > feld_y + spielfeld_hoehe - 40:
             main_menu = "Game_Over"
-            gameover.play()
+            sound_abspielen(gameover)
             schlange = [
             (start_x, start_y),
             (start_x - zellgroesse, start_y),
